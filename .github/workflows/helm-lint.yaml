@@ -7,6 +7,9 @@ on:
 env:
   REGISTRY: ghcr.io
 
+permissions:
+  contents: read
+
 jobs:
   helm-lint:
     runs-on: [ default ]

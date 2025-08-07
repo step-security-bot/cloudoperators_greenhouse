@@ -9,6 +9,9 @@ on:
       - 'go.sum'
       - '.golangci.yaml'
 
+permissions:
+  contents: read
+
 jobs:
   lint:
     runs-on: [ default ]
