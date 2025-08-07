@@ -18,6 +18,11 @@ jobs:
     runs-on: [ default ]
     name: "Prepare E2E Scenarios"
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
+        with:
+          egress-policy: audit
+
       - name: "Checkout"
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
@@ -41,9 +46,14 @@ jobs:
         e2es: ${{fromJson(needs.init.outputs.tests)}}
     steps:
       # run the e2e tests using composite common/workflows/e2e action
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
+        with:
+          egress-policy: audit
+
       - name: "E2E"
         id: e2e
-        uses: cloudoperators/common/workflows/e2e@main
+        uses: cloudoperators/common/workflows/e2e@47a50f3be434fcad81a185ad0d81b467fd513b21 # main
         with:
           k8s-version: ${{ matrix.k8s-version }}
           scenario: ${{ matrix.e2es }}
@@ -57,6 +67,11 @@ jobs:
     runs-on: [ default ]
     if: always()
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
+        with:
+          egress-policy: audit
+
       - name: "Check if e2e passed"
         run: |
           if [ "${{ needs.e2e.result }}" == "success" ]; then

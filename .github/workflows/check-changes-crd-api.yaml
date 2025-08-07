@@ -18,12 +18,20 @@ on:
       - "api/meta/**"
       - "api/v1alpha1/**"
       - "api/v1alpha2/**"
+permissions:
+  contents: read
+
 jobs:
   generate-docs-types-specs:
     runs-on: [default]
     permissions:
       contents: write
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
+        with:
+          egress-policy: audit
+
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
